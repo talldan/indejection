@@ -15,15 +15,29 @@ Next, in your code, write factories that declare dependencies they'd like inject
 
 *app.js*
 ```javascript
-var app = function(pictureViewer) {
+var app = function(person) {
 	return {
  		start: function() {
- 			pictureViewer.show();
+ 			person.greet();
  		}
 	}
 };
 
-app.$inject = ['pictureViewer'];
+app.$inject = ['person'];
+module.exports = app;
+```
+
+*person.js*
+```javascript```
+var person = function() {
+	return {
+		greet: function() {
+			console.log('hi!');
+		}
+	}
+};
+
+module.exports = person;
 ```
 
 Then, in the 'main' part of your app, make a container and register your factories
@@ -33,12 +47,20 @@ Then, in the 'main' part of your app, make a container and register your factori
 var container = indejection();
 ```
 
-Finally, declare your factories
+Declare your factories
 
 *index.js*
 ```javascript
 container.register('app', require('./app'), 'singleton');  // singleton will only be made once
-container.register('pictureViewer', require('./pictureViewer'));
+container.register('person', require('./person'));
+```
+
+To kickstart everything, get your entry point. It, and all other dependencies will be created as needed:
+
+*index.js*
+```javascript
+var app = container.get('app');
+app.start();
 ```
 
 TODO List
@@ -47,5 +69,6 @@ TODO List
 - Tests
 - Remove lodash dependency
 - Make it so that you can depend on other non-instantiable things (text, numbers, plain objects)
+- Factories as a dependency
 - Perhaps some kind of namespacing for dependencies, or nestable containers
 - More lifecycles, other options (support for newing?)
