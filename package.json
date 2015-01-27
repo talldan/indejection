@@ -1,6 +1,6 @@
 {
   "name": "indejection",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A simple dependency injector using functions as factories",
   "main": "indejection.js",
   "scripts": {

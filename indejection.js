@@ -20,7 +20,7 @@ var indejection = function() {
 		}
 
 		if (instance === null) {
-			instance = item.apply(item, dependencies);
+			instance = factory.apply(factory, dependencies);
 		}
 
 		if ((name in singletons) && singletons[name] === null) {
