@@ -6,7 +6,7 @@ var indejection = function() {
 	var singletons = {};
 
 	function manufacture(name) {
-		var factory = getFactoryFromRegistry();
+		var factory = getFactoryFromRegistry(name);
 
 		var dependencies = null;
 		if (_.isArray(factory.$inject)) {
