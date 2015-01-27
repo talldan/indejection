@@ -28,7 +28,7 @@ module.exports = app;
 ```
 
 *person.js*
-```javascript```
+```javascript
 var person = function() {
 	return {
 		greet: function() {
