@@ -1,9 +1,15 @@
 var _ = require('lodash');
+var DEFAULT_MAKER = 'basic';
+var makers = {
+	basic: require('makers/basic'),
+	singleton: require('makers/singleton'),
+	fixed: require('makers/fixed')
+};
 
 var indejection = function() {
 	var container = {};
 	var registry = {};
-	var singletons = {};
+	var options = {};
 
 	function manufacture(name) {
 		var factory = getFactoryFromRegistry(name);
@@ -13,21 +19,8 @@ var indejection = function() {
 			dependencies = _.map(factory.$inject, manufacture);
 		}
 
-		var instance = null;
-
-		if ((name in singletons) && singletons[name] !== null) {
-			singletons[name] = instance;
-		}
-
-		if (instance === null) {
-			instance = factory.apply(factory, dependencies);
-		}
-
-		if ((name in singletons) && singletons[name] === null) {
-			singletons[name] = instance;
-		}
-
-		return instance;
+		var maker = getMaker(name);
+		return maker.make(name, factory, dependencies);
 	}
 
 	function getFactoryFromRegistry(name) {
@@ -38,15 +31,42 @@ var indejection = function() {
 		return registry[name];
 	}
 
-	container.register = function(name, factory, options) {
-		registry[name] = factory;
+	function getMaker(name) {
+		var maker = null;
 
-		if (_.isPlainObject(options)) {
-			if (options.type === 'singleton') {
-				singletons[name] = null;
+		if ((name in options) && ('maker' in options[name])) {
+			var makerType = options[name].maker;
+
+			if (makerType in makers) {
+				maker = makers[makerType];
 			}
 		}
 
+		if (maker === null) {
+			maker = makers[DEFAULT_MAKER];
+		}
+
+		return maker;
+	}
+
+	function processOptions(name, options) {
+		if (_.isPlainObject(options)) {
+			if (!('maker' in options)) {
+				options['maker'] = 'default';
+			}
+
+			options[name] = options;
+		}
+		else {
+			options[name] = {
+				maker: 'default'
+			};
+		}
+	}
+
+	container.register = function(name, factory, options) {
+		registry[name] = factory;
+		processOptions(name, options);
 		return container;
 	};
 

@@ -51,7 +51,7 @@ Declare your factories
 
 *index.js*
 ```javascript
-container.register('app', require('./app'), 'singleton');  // singleton will only be made once
+container.register('app', require('./app'), { maker: 'singleton' });  // singleton will only be made once
 container.register('person', require('./person'));
 ```
 
@@ -63,12 +63,20 @@ var app = container.get('app');
 app.start();
 ```
 
+Other options
+--------------
+
+handle a dependency that doesn't require instanciation (object literals for config data, etc.)
+
+```javascript
+container.register('config', require('./config.json'), { maker: 'fixed' })
+```
+
 TODO List
 ---------
 - A better example
 - Tests
 - Remove lodash dependency
-- Make it so that you can depend on other non-instantiable things (text, numbers, plain objects)
 - Factories as a dependency
 - Perhaps some kind of namespacing for dependencies, or nestable containers
 - More lifecycles, other options (support for newing?)
