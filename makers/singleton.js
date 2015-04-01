@@ -1,4 +1,4 @@
-var basicMaker = require('basic');
+var basicMaker = require('./basic');
 
 function singleton() {
 	var singletonRegistry = {};
