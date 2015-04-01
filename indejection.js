@@ -49,13 +49,13 @@ var indejection = function() {
 		return maker;
 	}
 
-	function processOptions(name, options) {
-		if (_.isPlainObject(options)) {
-			if (!('maker' in options)) {
-				options['maker'] = 'default';
+	function processOptions(name, optionsIn) {
+		if (_.isPlainObject(optionsIn)) {
+			if (!('maker' in optionsIn)) {
+				optionsIn['maker'] = 'default';
 			}
 
-			options[name] = options;
+			options[name] = optionsIn;
 		}
 		else {
 			options[name] = {
@@ -64,9 +64,9 @@ var indejection = function() {
 		}
 	}
 
-	container.register = function(name, factory, options) {
+	container.register = function(name, factory, optionsIn) {
 		registry[name] = factory;
-		processOptions(name, options);
+		processOptions(name, optionsIn);
 		return container;
 	};
 
