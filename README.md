@@ -3,6 +3,8 @@ indejection.js
 
 Dead simple dependency injection for factory style functions
 
+This project is in a very early stage of development, and usage is not recommended at this stage.
+
 Usage
 -----
 

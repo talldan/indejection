@@ -1,9 +1,9 @@
 var _ = require('lodash');
 var DEFAULT_MAKER = 'basic';
 var makers = {
-	basic: require('./makers/basic'),
-	singleton: require('./makers/singleton'),
-	fixed: require('./makers/fixed')
+	basic: require('./makers/basic')(),
+	singleton: require('./makers/singleton')(),
+	fixed: require('./makers/fixed')()
 };
 
 var indejection = function() {
