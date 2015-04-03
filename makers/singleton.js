@@ -1,4 +1,4 @@
-var basicMaker = require('./basic');
+var basicMaker = require('./basic')();
 
 function singleton() {
 	var singletonRegistry = {};
@@ -12,6 +12,10 @@ function singleton() {
 			}
 			else {
 				instance = basicMaker.make(name, factory, dependencies);
+			}
+
+			if (!(name in singletonRegistry)) {
+				singletonRegistry[name] = instance;
 			}
 
 			return instance;
